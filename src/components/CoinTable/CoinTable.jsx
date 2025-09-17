@@ -1,26 +1,32 @@
 // import { useEffect } from "react";
-import { useState } from "react";
+import {  useState } from "react";
 import { fetchCoinData } from "../../Services/fetchCoinData";
 import { useQuery } from "@tanstack/react-query";
+// import { CurrencyContext } from "../../context/CurrencyContext";
+import currencyStore from '../../zustand/store';
+import { useNavigate } from "react-router-dom";
 
 function CoinTable() {
 
    // useEffect(()=>{
    //    fetchCoinData(2, 'inr');
    //    },[]);
+
+//   const {currency} = useContext(CurrencyContext);
+const {currency} = currencyStore();
+
+const navigate = useNavigate();
   
 
    const [page, setPage] = useState(1);
-
-   
-
    const  { data, isLoading, isError, error} = useQuery({
-      queryKey: ["coins", page],
-      queryFn: () => fetchCoinData(page, 'usd'), 
+      queryKey: ["coins", page, currency],
+      queryFn: () => fetchCoinData(page, currency), 
       // retry: 2,
       // retryDelay: 1000,
       gcTime: 1000 * 60 * 2, 
-      staleTime: 1000 * 60 * 2, // It will not make an API call for the old data to update for 2 minutes.
+      staleTime: 1000 * 60 * 2, 
+      // It will not make an API call for the old data to update for 2 minutes.
    });
 
    //  useEffect(()=>{
@@ -31,10 +37,15 @@ function CoinTable() {
    // if(isLoading){
    //    return <div>Loading...</div>
    // }
+   
+   function handleCoinRedirect(id) {
+       navigate(`/details/${id}`)
+   }
 
    if(isError){
       <div>Error: {error.message}</div>
    }
+   
 
   return (
 
@@ -59,7 +70,7 @@ function CoinTable() {
          {isLoading && <div>Loading...</div>}
            {data?.map((coin) => {
                return(
-                  <div key={coin.id} className="flex items-center justify-between w-full px-2 py-4 font-semibold text-black bg-transparent">
+                  <div onClick={() => handleCoinRedirect(coin.id)} key={coin.id} className="flex items-center justify-between w-full px-2 py-4 font-semibold text-black bg-transparent cursor-pointer">
                      <div className="flex items-center justify-start gap-3 basis-[35%]">
                         <div className="w-[5rem] h-[5rem]">
                            <img src={coin.image} alt={coin.name} />
