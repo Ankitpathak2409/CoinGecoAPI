@@ -34,7 +34,7 @@ function CoinDetails() {
     return(
         <div className="flex flex-col md:flex-row">
           <div className="flex flex-col items-center w-full mt-6 border-r-2 border-gray-500 md:w-1/3 md:mt-0">
-            <img src={coin?.image?.large} alt={coin?.name} className="mb-5 h-52"/>
+            <img src={coin?.image?.large} alt={coin?.name} className="mb-5 h-52" loading="lazy" />
             <h1 className="mb-5 text-4xl font-bold"> {coin?.name} </h1>
             <p className="w-full px-6 py-4 text-justify" >{coin?.description?.en}</p>
 

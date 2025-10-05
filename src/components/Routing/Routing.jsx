@@ -3,13 +3,17 @@ import MainLayout from "../../pages/Layout";
 import { lazy, Suspense } from "react";
 // import { Facebook } from 'react-content-loader';
 import PageLoader from '../PageLoader/PageLoader';
+import CustomErrorBoundary from "../CustomErrorBoundary/CustomErrorBoundary";
 
 const Home = lazy(() => import('../../pages/Home'));
 const CoinDetails = lazy(()=> import('../../pages/CoinDetails')); 
 
 function Routing(){
     return(
-      <Routes>
+
+      <CustomErrorBoundary>
+         
+         <Routes>
         <Route path="/" element={ <MainLayout />}>
           
           <Route index element={
@@ -29,6 +33,9 @@ function Routing(){
 
         </Route>
       </Routes>
+
+      </CustomErrorBoundary>
+      
     );
 
 }
